@@ -2,6 +2,8 @@ package com.algaworks.algafoodapi.controller;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.infrastructure.RestauranteRepositoryImpl;
+import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComFreteGratisSpec;
+import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,15 @@ public class RestauranteController {
 
 		return new ResponseEntity<>(restaurante, HttpStatus.OK);
 	}
+
+	@GetMapping("/com-frete-gratis")
+	public ResponseEntity<List<?>> buscarFreteGratis(String nome){
+		var freteGratis = new RestauranteComFreteGratisSpec();
+		var nomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		var result = restauranteService.buscarFreteGratis(freteGratis, nomeSemelhante);
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 
 }

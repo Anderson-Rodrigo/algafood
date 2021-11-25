@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,44 +23,54 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 	private EntityManager entityManager;
 
 	@Override
-	public List<Restaurante> listar (String nome, BigDecimal taxaFreteIncial, BigDecimal taxaFreteFinal){
+	public List<Restaurante> listar (String nome, BigDecimal taxaFreteIncial, BigDecimal taxaFreteFinal) {
 		//var jpql = "from Restaurante where nome like :nome and taxaFrete between :tataxaFreteIncial and :taxaFreteFinal";
 
-//		var jpql = new StringBuilder();
-//		jpql.append("from Restaurante where 0 = 0 ");
-//
-//		var parametros = new HashMap<String, Object>();
-//
-//		if(StringUtils.hasLength(nome)){
-//			jpql.append(" and nome like :nome ");
-//			parametros.put("nome", "%" + nome + "%" );
-//		}
-//
-//		if(taxaFreteFinal != null){
-//			jpql.append(" and taxaFrete >= :tataxaFreteIncial ");
-//			parametros.put("tataxaFreteIncial", taxaFreteIncial );
-//		}
-//
-//		if(taxaFreteIncial != null){
-//			jpql.append(" and taxaFrete <= :tataxaFreteIncial ");
-//			parametros.put("taxaFreteFinal", taxaFreteFinal );
-//		}
-//
-//		TypedQuery<Restaurante> query = entityManager.createQuery(jpql.toString(), Restaurante.class);
-//		parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
-//
-//		return query.getResultList();
+		//		var jpql = new StringBuilder();
+		//		jpql.append("from Restaurante where 0 = 0 ");
+		//
+		//		var parametros = new HashMap<String, Object>();
+		//
+		//		if(StringUtils.hasLength(nome)){
+		//			jpql.append(" and nome like :nome ");
+		//			parametros.put("nome", "%" + nome + "%" );
+		//		}
+		//
+		//		if(taxaFreteFinal != null){
+		//			jpql.append(" and taxaFrete >= :tataxaFreteIncial ");
+		//			parametros.put("tataxaFreteIncial", taxaFreteIncial );
+		//		}
+		//
+		//		if(taxaFreteIncial != null){
+		//			jpql.append(" and taxaFrete <= :tataxaFreteIncial ");
+		//			parametros.put("taxaFreteFinal", taxaFreteFinal );
+		//		}
+		//
+		//		TypedQuery<Restaurante> query = entityManager.createQuery(jpql.toString(), Restaurante.class);
+		//		parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
+		//
+		//		return query.getResultList();
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
 		CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
 		Root<Restaurante> root = criteria.from(Restaurante.class);
 
-		Predicate nomeRestaurante = builder.like(root.get("nome"), "%" + nome + "%");
-		Predicate taxaFreteInicio = builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteIncial);
-		Predicate taxaFreteFim = builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
+		var predicates = new ArrayList<Predicate>();
 
-		criteria.where(nomeRestaurante, taxaFreteInicio,taxaFreteFim );
+		if(StringUtils.hasLength(nome)) {
+			predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
+		}
+
+		if(taxaFreteIncial != null){
+			predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteIncial));
+		}
+
+		if(taxaFreteFinal != null) {
+			predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+		}
+
+		criteria.where(predicates.toArray(new Predicate[0]));
 
 		TypedQuery<Restaurante> query = entityManager.createQuery(criteria);
 

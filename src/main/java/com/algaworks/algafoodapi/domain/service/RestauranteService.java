@@ -2,6 +2,8 @@ package com.algaworks.algafoodapi.domain.service;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.infrastructure.RestauranteRepositoryImpl;
+import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComFreteGratisSpec;
+import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
@@ -100,4 +102,7 @@ public class RestauranteService {
 
 	}
 
+	public List<Restaurante> buscarFreteGratis(RestauranteComFreteGratisSpec freteGratis, RestauranteComNomeSemelhanteSpec nomeSemelhante) {
+		return restauranteRepository.findAll(freteGratis.and(nomeSemelhante));
+	}
 }
