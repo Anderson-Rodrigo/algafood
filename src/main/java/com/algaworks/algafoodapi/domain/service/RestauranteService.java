@@ -112,4 +112,8 @@ public class RestauranteService {
 	public List<Restaurante> buscarRestaurantes(String nome){
 		return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 	}
+
+	public Optional<Restaurante> primeiroRestaurante(){
+		return restauranteRepository.buscarPrimeiro();
+	}
 }

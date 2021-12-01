@@ -105,5 +105,12 @@ public class RestauranteController {
 		return new ResponseEntity<>(restaurantes, HttpStatus.OK);
 	}
 
-
+	@GetMapping("/primeiro")
+	public ResponseEntity<Restaurante> primeiroRestaurante(){
+		Optional<Restaurante> restaurante = restauranteService.primeiroRestaurante();
+		if(restaurante.isPresent()) {
+			return new ResponseEntity<>(restaurante.get(), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }
