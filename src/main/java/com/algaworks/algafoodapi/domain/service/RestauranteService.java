@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteSpecs.comFreteGratis;
+import static com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteSpecs.comNomeSemelhante;
+
 @Service
 public class RestauranteService {
 
@@ -104,5 +107,9 @@ public class RestauranteService {
 
 	public List<Restaurante> buscarFreteGratis(RestauranteComFreteGratisSpec freteGratis, RestauranteComNomeSemelhanteSpec nomeSemelhante) {
 		return restauranteRepository.findAll(freteGratis.and(nomeSemelhante));
+	}
+
+	public List<Restaurante> buscarRestaurantes(String nome){
+		return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 	}
 }

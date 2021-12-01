@@ -1,9 +1,6 @@
 package com.algaworks.algafoodapi.controller;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafoodapi.domain.infrastructure.RestauranteRepositoryImpl;
-import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.algaworks.algafoodapi.domain.infrastructure.spec.RestauranteSpecs.*;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -96,13 +95,14 @@ public class RestauranteController {
 		return new ResponseEntity<>(restaurante, HttpStatus.OK);
 	}
 
-	@GetMapping("/com-frete-gratis")
-	public ResponseEntity<List<?>> buscarFreteGratis(String nome){
-		var freteGratis = new RestauranteComFreteGratisSpec();
-		var nomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		var result = restauranteService.buscarFreteGratis(freteGratis, nomeSemelhante);
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
+	@GetMapping("/com-frete-gratis")
+	public ResponseEntity<List<Restaurante>> buscarFreteGratis(String nome){
+//		var freteGratis = new RestauranteComFreteGratisSpec();
+//		var nomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+//		var result = restauranteService.buscarFreteGratis();
+		List<Restaurante> restaurantes = restauranteService.buscarRestaurantes(nome);
+		return new ResponseEntity<>(restaurantes, HttpStatus.OK);
 	}
 
 
