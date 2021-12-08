@@ -1,10 +1,15 @@
 package com.algaworks.algafoodapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +28,11 @@ public class Cozinha {
 	// para ignorar a coluna @JsonIgnore
 	@Column(name = "nom_cozinha")
 	private String nome;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "cozinha")
+	@ToString.Exclude
+	private List<Restaurante> restaurantes = new ArrayList<>();
 
 	@Override
 	public boolean equals (Object o) {

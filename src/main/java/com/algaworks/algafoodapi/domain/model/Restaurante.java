@@ -1,12 +1,16 @@
 package com.algaworks.algafoodapi.domain.model;
 
-import com.sun.istack.NotNull;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.springframework.data.annotation.Reference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +35,13 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id")
 	private Cozinha cozinha;
 
+	@JsonIgnore
+	@ManyToMany
+	@ToString.Exclude
+	@JoinTable(name = "restaurante_forma_pagamento",
+				joinColumns = @JoinColumn(name = "restaurante_id"),
+				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
 	@Override
 	public boolean equals (Object o) {
