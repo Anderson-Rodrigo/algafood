@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Data
 @Embeddable
@@ -26,7 +26,7 @@ public class Endereco {
     @Column(name = "endereco_bairro")
     private String bairro;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "endereco_cidade_id")
     private Cidade cidade;
 

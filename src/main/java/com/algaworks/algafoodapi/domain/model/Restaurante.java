@@ -35,16 +35,20 @@ public class Restaurante {
 	private BigDecimal taxaFrete;
 
 	@ManyToOne
-	@JoinColumn(name = "cozinha_id")
+	@JoinColumn(name = "cozinha_id", nullable = false)
+	@JsonIgnore
 	private Cozinha cozinha;
 
-	@JsonIgnore
 	@ManyToMany
-	@ToString.Exclude
 	@JoinTable(name = "restaurante_forma_pagamento",
-				joinColumns = @JoinColumn(name = "restaurante_id"),
-				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+				joinColumns = @JoinColumn(name = "tab_restaurante_id"),
+				inverseJoinColumns = @JoinColumn(name = "tab_forma_pagamento_id"))
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+	@OneToMany(mappedBy = "restaurante")
+	@ToString.Exclude
+	@JsonIgnore
+	private List<Produto> produtos = new ArrayList<>();
 
 	@Embedded
 	@JsonIgnore
@@ -52,12 +56,12 @@ public class Restaurante {
 
 	@CreationTimestamp
 	@JsonIgnore
-	@Column(nullable = false, columnDefinition = "datetime")
+	@Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataCadastro;
 
 	@UpdateTimestamp
 	@JsonIgnore
-	@Column(nullable = false, columnDefinition = "datetime")
+	@Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataAtualizacao;
 
 	@Override

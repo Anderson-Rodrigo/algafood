@@ -69,7 +69,7 @@ public class RestauranteService {
 		Optional<Restaurante> buscouRestaurante = restauranteRepository.findById(id);
 
 		if(buscouRestaurante != null) {
-			BeanUtils.copyProperties(restaurante, buscouRestaurante.get(), "id", "formasPagamento", "endereco", "dataCadastro");
+			BeanUtils.copyProperties(restaurante, buscouRestaurante.get(), "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 		}
 
 		return restauranteRepository.save(buscouRestaurante.get());
