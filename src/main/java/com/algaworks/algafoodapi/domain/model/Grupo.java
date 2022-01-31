@@ -18,7 +18,7 @@ public class Grupo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "grupo_nome")
+    @Column(name = "grp_nome")
     private String nome;
 
     @ManyToMany
