@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.domain.service;
 
-import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.model.Estado;
 import com.algaworks.algafoodapi.domain.repository.EstadoRepository;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +33,7 @@ public class EstadoService {
 	public void remover(Long id){
 		Optional<Estado> estado = estadoRepository.findById(id);
 		if(estado.isEmpty()){
-			throw new EntidadeNaoEncontradaException(String.format("Não foi encontrado nenhum estádo com o id %d", id));
+			throw new EstadoNaoEncontradaException(String.format("Não foi encontrado nenhum estádo com o id %d", id));
 		}
 		estadoRepository.delete(estado.get());
 	}
@@ -41,7 +41,7 @@ public class EstadoService {
 	public Estado atualizar (Long id, Estado estado) {
 		Optional<Estado> estadoBusca = estadoRepository.findById(id);
 		if(estadoBusca.isEmpty()){
-			throw new EntidadeNaoEncontradaException(String.format("Não existe o estado com id %d", id));
+			throw new EstadoNaoEncontradaException(String.format("Não existe o estado com id %d", id));
 		}
 		BeanUtils.copyProperties(estado, estadoBusca.get(), "id");
 

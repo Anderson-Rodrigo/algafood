@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.controller;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,12 @@ public class CidadeController {
 
 	@PutMapping("{id}")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade){
-		try{
-			cidade = cidadeService.atualizar(id, cidade);
-		}catch(EntidadeNaoEncontradaException e){
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		Optional<Cidade> cidadeBusca = cidadeService.buscar(id);
+		if(cidadeBusca.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(cidade, HttpStatus.OK);
+		return new ResponseEntity<>(cidadeService.atualizar(cidade, cidadeBusca.get()), HttpStatus.OK);
+
 	}
 
 	@DeleteMapping("{id}")
@@ -43,7 +44,7 @@ public class CidadeController {
 		try {
 			cidadeService.remover(id);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}catch(EntidadeNaoEncontradaException e){
+		}catch(NegocioException e){
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}

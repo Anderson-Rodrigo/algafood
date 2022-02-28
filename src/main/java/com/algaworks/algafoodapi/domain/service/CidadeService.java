@@ -28,24 +28,21 @@ public class CidadeService {
 		return cidadeRepository.save(cidade);
 	}
 
-	public Cidade atualizar(Long id, Cidade cidade){
-		Optional<Cidade> cidadeBusca = cidadeRepository.findById(id);
-		if(cidadeBusca.isEmpty()){
-			throw new EntidadeNaoEncontradaException(String.format("Não foi encontrada nenhum cidade com o id %d", id));
-		}
+	public Cidade atualizar(Cidade cidade, Cidade cidadeBusca){
 
-		BeanUtils.copyProperties(cidade, cidadeBusca.get(), "id");
+		BeanUtils.copyProperties(cidade, cidadeBusca, "id");
 
-		return cidadeRepository.save(cidadeBusca.get());
+		return cidadeRepository.save(cidadeBusca);
 
 	}
 
 	public void remover(Long id){
-		Cidade cidade = cidadeRepository.getById(id);
-		if(cidade == null){
+		Optional<Cidade> cidade = cidadeRepository.findById(id);
+
+		if(cidade.isEmpty()){
 			throw new EntidadeNaoEncontradaException(String.format("Não foi encontrada nenhum cidade com o id %d", id));
 		}
-		cidadeRepository.delete(cidade);
+		cidadeRepository.delete(cidade.get());
 	}
 
 	public Optional<Cidade> buscar(Long id){
