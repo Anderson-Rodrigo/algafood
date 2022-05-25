@@ -48,7 +48,7 @@ public class RestauranteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody @Validated(Groups.CadastroRestaurante.class) Restaurante restaurante){
+	public ResponseEntity<?> salvar(@RequestBody @Valid Restaurante restaurante){
 		try {
 			Restaurante restauranteCadastrado = restauranteService.salvar(restaurante);
 			return new ResponseEntity<>(restauranteCadastrado, HttpStatus.OK);
