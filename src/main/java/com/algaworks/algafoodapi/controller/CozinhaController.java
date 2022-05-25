@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,7 @@ public class CozinhaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody Cozinha cozinha){
+	public ResponseEntity<?> salvar(@RequestBody @Valid Cozinha cozinha){
 		Cozinha coz = cozinhaService.salvar(cozinha);
 		return new ResponseEntity<>(coz.getId(), HttpStatus.OK);
 	}

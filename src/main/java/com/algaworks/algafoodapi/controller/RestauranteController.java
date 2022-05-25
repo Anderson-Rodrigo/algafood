@@ -1,13 +1,16 @@
 package com.algaworks.algafoodapi.controller;
 
+import com.algaworks.algafoodapi.Groups;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +48,7 @@ public class RestauranteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody Restaurante restaurante){
+	public ResponseEntity<?> salvar(@RequestBody @Validated(Groups.CadastroRestaurante.class) Restaurante restaurante){
 		try {
 			Restaurante restauranteCadastrado = restauranteService.salvar(restaurante);
 			return new ResponseEntity<>(restauranteCadastrado, HttpStatus.OK);
