@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.Groups;
+import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -39,6 +41,7 @@ public class Restaurante {
 	private String nome;
 
 	@Column(name = "taxa_frete", nullable = false)
+	@TaxaFrete
 	private BigDecimal taxaFrete;
 
 	@Valid
@@ -49,8 +52,8 @@ public class Restaurante {
 	//@JsonIgnore
 	private Cozinha cozinha;
 
+	@JsonIgnore
 	@ManyToMany
-	//@JsonIgnore
 	@JoinTable(name = "restaurante_forma_pagamento",
 				joinColumns = @JoinColumn(name = "tab_restaurante_id"),
 				inverseJoinColumns = @JoinColumn(name = "tab_forma_pagamento_id"))
