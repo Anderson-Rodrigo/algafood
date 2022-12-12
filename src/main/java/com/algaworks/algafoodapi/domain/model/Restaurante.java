@@ -1,7 +1,9 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.Groups;
+import com.algaworks.algafoodapi.core.validation.Multiplo;
 import com.algaworks.algafoodapi.core.validation.TaxaFrete;
+import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ValorZeroIncluiDescricao(
+    valorField = "taxaFrete",
+    descricaoField = "nome",
+    descricaoObrigatoria = "Frete Gratis"
+)
 @Entity
 @Table(name = "tab_restaurante")
 @Getter
@@ -40,6 +47,7 @@ public class Restaurante {
 	@Column(name = "nom_restaurante")
 	private String nome;
 
+	@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
 	@TaxaFrete
 	private BigDecimal taxaFrete;
